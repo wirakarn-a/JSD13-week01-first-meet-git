@@ -417,55 +417,7 @@
   </style>
 </head>
 <body>
-
-  <section class="hero">
-    <button class="cart-btn" id="cartToggle" aria-label="Open cart">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-      <span class="badge" id="cartBadge">0</span>
-    </button>
-    <h1>Gourmet<span>Menu</span></h1>
-    <p>Curated dishes from around the world</p>
-    <div class="divider"></div>
-  </section>
-
-  <div class="container">
-    <div class="section-title">
-      <h2>Our Specialties</h2>
-      <p>Hand-picked flavors to delight your palate</p>
-    </div>
-    <div id="menuGrid" class="menu-grid"></div>
-    <div id="loading" class="loading">
-      <div class="spinner"></div>
-      Loading our menu...
-    </div>
-  </div>
-
-  <footer style="text-align:center;padding:30px 24px;color:#aaa;font-size:.85rem;border-top:1px solid #e8e0d6;">
-    &copy; 2026 Gourmet Menu. All rights reserved.
-  </footer>
-
-  <div class="cart-overlay" id="cartOverlay"></div>
-  <div class="cart-sidebar" id="cartSidebar">
-    <div class="cart-header">
-      <h2>Your Order <span id="cartCount">(0)</span></h2>
-      <button class="close-btn" id="cartClose">&times;</button>
-    </div>
-    <div class="cart-items" id="cartItems">
-      <div class="cart-empty">
-        <div class="empty-icon">🍽️</div>
-        <p>Your cart is empty</p>
-      </div>
-    </div>
-    <div class="cart-footer" id="cartFooter" style="display:none;">
-      <div class="cart-summary">
-        <div class="row"><span>Subtotal</span><span id="subtotal">$0.00</span></div>
-        <div class="row"><span>Tax (10%)</span><span id="tax">$0.00</span></div>
-        <div class="row total"><span>Total</span><span id="total">$0.00</span></div>
-      </div>
-      <button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button>
-    </div>
-  </div>
-
+  <div id="app"></div>
   <script src="my-array.js"></script>
   <script src="my-object.js"></script>
   <script>
@@ -614,6 +566,83 @@
       totalEl.textContent = fmt(total);
     }
 
+    function buildLayout() {
+      const app = document.getElementById('app');
+
+      const hero = document.createElement('section');
+      hero.className = 'hero';
+      hero.innerHTML = '<h1>Gourmet<span>Menu</span></h1><p>Curated dishes from around the world</p><div class="divider"></div>';
+
+      const cartBtn = document.createElement('button');
+      cartBtn.className = 'cart-btn';
+      cartBtn.id = 'cartToggle';
+      cartBtn.setAttribute('aria-label', 'Open cart');
+      cartBtn.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>';
+      const badge = document.createElement('span');
+      badge.className = 'badge';
+      badge.id = 'cartBadge';
+      badge.textContent = '0';
+      cartBtn.appendChild(badge);
+      hero.appendChild(cartBtn);
+      app.appendChild(hero);
+
+      const container = document.createElement('div');
+      container.className = 'container';
+
+      const sectionTitle = document.createElement('div');
+      sectionTitle.className = 'section-title';
+      sectionTitle.innerHTML = '<h2>Our Specialties</h2><p>Hand-picked flavors to delight your palate</p>';
+      container.appendChild(sectionTitle);
+
+      const grid = document.createElement('div');
+      grid.id = 'menuGrid';
+      grid.className = 'menu-grid';
+      container.appendChild(grid);
+
+      const loading = document.createElement('div');
+      loading.id = 'loading';
+      loading.className = 'loading';
+      loading.innerHTML = '<div class="spinner"></div>Loading our menu...';
+      container.appendChild(loading);
+
+      app.appendChild(container);
+
+      const footer = document.createElement('footer');
+      footer.style.cssText = 'text-align:center;padding:30px 24px;color:#aaa;font-size:.85rem;border-top:1px solid #e8e0d6;';
+      footer.textContent = '\u00A9 2026 Gourmet Menu. All rights reserved.';
+      app.appendChild(footer);
+
+      const overlay = document.createElement('div');
+      overlay.className = 'cart-overlay';
+      overlay.id = 'cartOverlay';
+      app.appendChild(overlay);
+
+      const sidebar = document.createElement('div');
+      sidebar.className = 'cart-sidebar';
+      sidebar.id = 'cartSidebar';
+      sidebar.innerHTML = '<div class="cart-header"><h2>Your Order <span id="cartCount">(0)</span></h2><button class="close-btn" id="cartClose">&times;</button></div><div class="cart-items" id="cartItems"><div class="cart-empty"><div class="empty-icon">\uD83C\uDF7D\uFE0F</div><p>Your cart is empty</p></div></div><div class="cart-footer" id="cartFooter" style="display:none;"><div class="cart-summary"><div class="row"><span>Subtotal</span><span id="subtotal">$0.00</span></div><div class="row"><span>Tax (10%)</span><span id="tax">$0.00</span></div><div class="row total"><span>Total</span><span id="total">$0.00</span></div></div><button class="checkout-btn" id="checkoutBtn">Proceed to Checkout</button></div>';
+      app.appendChild(sidebar);
+
+      document.getElementById('cartToggle').addEventListener('click', () => {
+        document.getElementById('cartOverlay').classList.add('open');
+        document.getElementById('cartSidebar').classList.add('open');
+      });
+      document.getElementById('cartClose').addEventListener('click', closeCart);
+      document.getElementById('cartOverlay').addEventListener('click', closeCart);
+      document.getElementById('checkoutBtn').addEventListener('click', () => {
+        if (cart.length === 0) return;
+        alert('Thank you for your order!\nTotal: ' + fmt(cart.reduce((s,c) => s + c.price * c.qty, 0) * 1.1));
+        cart = [];
+        renderCart();
+        closeCart();
+      });
+    }
+
+    function closeCart() {
+      document.getElementById('cartOverlay').classList.remove('open');
+      document.getElementById('cartSidebar').classList.remove('open');
+    }
+
     function buildCard(item) {
       const e = extras[item.name] || { price: 0, desc: "" };
       const veg = vegLabels[item.name] || (item.vegetarian ? "Veg" : "Non-Veg");
@@ -630,25 +659,51 @@
 
       const body = document.createElement('div');
       body.className = 'card-body';
-      body.innerHTML = `
-        <h3>${item.name}</h3>
-        <div class="card-meta">
-          <span class="cuisine">${item.cusine}</span>
-          <span class="origin">${item.origin}</span>
-          <span class="${vegClass}">${veg}</span>
-        </div>
-        <p class="desc">${e.desc}</p>
-        <div class="card-footer">
-          <span class="price">${fmt(e.price)}</span>
-          <button class="add-btn" data-id="${item.id}">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-            Add
-          </button>
-        </div>
-      `;
 
-      body.querySelector('.add-btn').addEventListener('click', () => addToCart(item));
+      const h3 = document.createElement('h3');
+      h3.textContent = item.name;
+      body.appendChild(h3);
 
+      const meta = document.createElement('div');
+      meta.className = 'card-meta';
+
+      const cuisine = document.createElement('span');
+      cuisine.className = 'cuisine';
+      cuisine.textContent = item.cusine;
+      meta.appendChild(cuisine);
+
+      const origin = document.createElement('span');
+      origin.className = 'origin';
+      origin.textContent = item.origin;
+      meta.appendChild(origin);
+
+      const vegSpan = document.createElement('span');
+      vegSpan.className = vegClass;
+      vegSpan.textContent = veg;
+      meta.appendChild(vegSpan);
+
+      body.appendChild(meta);
+
+      const desc = document.createElement('p');
+      desc.className = 'desc';
+      desc.textContent = e.desc;
+      body.appendChild(desc);
+
+      const footer = document.createElement('div');
+      footer.className = 'card-footer';
+
+      const priceSpan = document.createElement('span');
+      priceSpan.className = 'price';
+      priceSpan.textContent = fmt(e.price);
+      footer.appendChild(priceSpan);
+
+      const addBtn = document.createElement('button');
+      addBtn.className = 'add-btn';
+      addBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Add';
+      addBtn.addEventListener('click', () => addToCart(item));
+      footer.appendChild(addBtn);
+
+      body.appendChild(footer);
       card.appendChild(img);
       card.appendChild(body);
       return card;
@@ -661,24 +716,9 @@
       loading.style.display = 'none';
     }
 
-    document.addEventListener('DOMContentLoaded', renderMenu);
-
-    document.getElementById('cartToggle').addEventListener('click', () => {
-      document.getElementById('cartOverlay').classList.add('open');
-      document.getElementById('cartSidebar').classList.add('open');
-    });
-    document.getElementById('cartClose').addEventListener('click', closeCart);
-    document.getElementById('cartOverlay').addEventListener('click', closeCart);
-    function closeCart() {
-      document.getElementById('cartOverlay').classList.remove('open');
-      document.getElementById('cartSidebar').classList.remove('open');
-    }
-    document.getElementById('checkoutBtn').addEventListener('click', () => {
-      if (cart.length === 0) return;
-      alert('Thank you for your order!\nTotal: ' + fmt(cart.reduce((s,c) => s + c.price * c.qty, 0) * 1.1));
-      cart = [];
-      renderCart();
-      closeCart();
+    document.addEventListener('DOMContentLoaded', () => {
+      buildLayout();
+      renderMenu();
     });
   </script>
 </body>

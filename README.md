@@ -1,6 +1,6 @@
 # Gourmet Menu
 
-    โปรเจคนี้เป็นส่วนหนึ่งของการเรียนรู้ในหลักสูตร Generation Thailand
+    This project is part of the learning in the Generation Thailand program
 
 A modern restaurant menu web page that displays food items with images, cuisine info, and a shopping cart system.
 
