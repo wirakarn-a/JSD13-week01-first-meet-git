@@ -536,25 +536,75 @@
 
       checkoutBtn.disabled = false;
       footerEl.style.display = 'block';
+      itemsEl.innerHTML = '';
 
-      itemsEl.innerHTML = cart.map(c => `
-        <div class="cart-item">
-          <img class="cart-item-img" src="${c.image}" alt="${c.name}" loading="lazy">
-          <div class="cart-item-info">
-            <h4>${c.name}</h4>
-            <div class="item-price">${fmt(c.price)}</div>
-            <div class="cart-item-controls">
-              <button class="qty-btn" onclick="updateQty(${c.id},-1)">−</button>
-              <span class="qty-value">${c.qty}</span>
-              <button class="qty-btn" onclick="updateQty(${c.id},1)">+</button>
-              <button class="qty-btn remove" onclick="removeFromCart(${c.id})" style="margin-left:6px;">✕</button>
-            </div>
-          </div>
-          <div class="cart-item-total">
-            <span class="item-total-price">${fmt(c.price * c.qty)}</span>
-          </div>
-        </div>
-      `).join('');
+      cart.forEach(c => {
+        const item = document.createElement('div');
+        item.className = 'cart-item';
+
+        const img = document.createElement('img');
+        img.className = 'cart-item-img';
+        img.src = c.image;
+        img.alt = c.name;
+        img.loading = 'lazy';
+
+        const info = document.createElement('div');
+        info.className = 'cart-item-info';
+
+        const name = document.createElement('h4');
+        name.textContent = c.name;
+
+        const price = document.createElement('div');
+        price.className = 'item-price';
+        price.textContent = fmt(c.price);
+
+        const controls = document.createElement('div');
+        controls.className = 'cart-item-controls';
+
+        const minus = document.createElement('button');
+        minus.className = 'qty-btn';
+        minus.textContent = '\u2212';
+        minus.addEventListener('click', () => updateQty(c.id, -1));
+
+        const qty = document.createElement('span');
+        qty.className = 'qty-value';
+        qty.textContent = c.qty;
+
+        const plus = document.createElement('button');
+        plus.className = 'qty-btn';
+        plus.textContent = '+';
+        plus.addEventListener('click', () => updateQty(c.id, 1));
+
+        const remove = document.createElement('button');
+        remove.className = 'qty-btn remove';
+        remove.style.marginLeft = '6px';
+        remove.textContent = '\u2715';
+        remove.addEventListener('click', () => removeFromCart(c.id));
+
+        controls.appendChild(minus);
+        controls.appendChild(qty);
+        controls.appendChild(plus);
+        controls.appendChild(remove);
+
+        info.appendChild(name);
+        info.appendChild(price);
+        info.appendChild(controls);
+
+        const total = document.createElement('div');
+        total.className = 'cart-item-total';
+
+        const totalPrice = document.createElement('span');
+        totalPrice.className = 'item-total-price';
+        totalPrice.textContent = fmt(c.price * c.qty);
+
+        total.appendChild(totalPrice);
+
+        item.appendChild(img);
+        item.appendChild(info);
+        item.appendChild(total);
+
+        itemsEl.appendChild(item);
+      });
 
       const subtotal = cart.reduce((s, c) => s + c.price * c.qty, 0);
       const tax = subtotal * 0.1;
@@ -590,12 +640,14 @@
         <p class="desc">${e.desc}</p>
         <div class="card-footer">
           <span class="price">${fmt(e.price)}</span>
-          <button class="add-btn" onclick="addToCart(foodDatabase.find(f=>f.id===${item.id}))">
+          <button class="add-btn" data-id="${item.id}">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             Add
           </button>
         </div>
       `;
+
+      body.querySelector('.add-btn').addEventListener('click', () => addToCart(item));
 
       card.appendChild(img);
       card.appendChild(body);

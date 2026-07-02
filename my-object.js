@@ -15,7 +15,7 @@ let foodDatabase = [
         cusine: "Chinese",
         origin: "China",
         vegetarian: false,
-        image: "https://images.unsplash.com/photo-1623341214825-af219f4dfb1c?w=400&q=80"
+        image: "https://images.unsplash.com/photo-1767298021358-ba76c73a5c5f?w=400&q=80"
     },
     {
         id: 3,
@@ -47,7 +47,7 @@ let foodDatabase = [
         cusine: "Italian",
         origin: "Italy",
         vegetarian: false,
-        image: "https://images.unsplash.com/photo-1621743478914-cc8a86d7e9d5?w=400&q=80"
+        image: "https://upload.wikimedia.org/wikipedia/commons/2/23/Honey_cake_Medovik.jpg"
     },
 ];
 
